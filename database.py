@@ -50,13 +50,14 @@ def delete_user_from_db(id):
         _conn.commit()
 
 def add_user(id, pw):
-    with sqlite3.connect(user_db_file_location) as _conn:
-        _c = _conn.cursor()
+    if id.upper() not in list_users():
+        with sqlite3.connect(user_db_file_location) as _conn:
+            _c = _conn.cursor()
 
-        salt = bcrypt.gensalt()
-        _c.execute("INSERT INTO users values(?, ?)", (id.upper(), bcrypt.hashpw(pw.encode(), salt)))
-        
-        _conn.commit()
+            salt = bcrypt.gensalt()
+            _c.execute("INSERT INTO users values(?, ?)", (id.upper(), bcrypt.hashpw(pw.encode(), salt)))
+            
+            _conn.commit()
 
 def read_note_from_db(id):
     with sqlite3.connect(note_db_file_location) as _conn:
