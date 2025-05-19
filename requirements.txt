@@ -3,3 +3,4 @@ Werkzeug
 markupsafe
 requests
 psycopg
+bcrypt
