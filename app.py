@@ -6,10 +6,10 @@ from werkzeug.utils import secure_filename
 
 development=0
 if development:
-    from database import init_db
-    from database import list_users, verify, delete_user_from_db, add_user
-    from database import read_note_from_db, write_note_into_db, delete_note_from_db, match_user_id_with_note_id
-    from database import image_upload_record, list_images_for_user, match_user_id_with_image_uid, delete_image_from_db
+    from database_sqlite import init_db
+    from database_sqlite import list_users, verify, delete_user_from_db, add_user
+    from database_sqlite import read_note_from_db, write_note_into_db, delete_note_from_db, match_user_id_with_note_id
+    from database_sqlite import image_upload_record, list_images_for_user, match_user_id_with_image_uid, delete_image_from_db
 else:
     from database_postgres import init_db
     from database_postgres import list_users, verify, delete_user_from_db, add_user
