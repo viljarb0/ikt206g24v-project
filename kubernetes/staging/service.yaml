@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask
+  namespace: staging
+  labels:
+    env: staging
+    app: flask
+spec:
+  type: NodePort  # Direct access during development
+  selector:
+    app: flask
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5000       # Expose port 5000 to match Flask app
+      targetPort: 5000 # Flask app listens on this port in the container
+      nodePort: 30080  # NodePort for direct testing (e.g. http://localhost:30080)
+
+     

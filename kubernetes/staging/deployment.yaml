@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: flask
+        image: registry.internal.uia.no/ikt206-g-25v-devops/group27/exam:latest
+        imagePullPolicy: IfNotPresent
+        command: ["python"]
+        args: ["app.py"]  # Or ["-m", "app"] if using a package
+        env:
+        - name: POSTGRES_DB
+          value: "postgres"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "Password1."
+        - name: POSTGRES_HOST
+          value: "postgres"
+        envFrom:
+        - configMapRef:
+            name: flask-config-staging
+        - secretRef:
+            name: flask-secrets-staging

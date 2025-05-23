@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-config-prod
+  namespace: production
+data:
+  FLASK_ENV: "production"
+  DATABASE_URL: "postgresql://postgres:Password1@postgres-production:5432/db"
+  settings.cfg: |
+    # Production-specific settings
+    LOG_LEVEL=INFO
+    DB_HOST=prod-db.internal

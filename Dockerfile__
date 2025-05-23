@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1
+
+# Stage 1: Builder
+FROM python:3.10-slim AS builder
+
+WORKDIR /build
+
+# Install build dependencies
+COPY requirements.txt .
+RUN pip install --upgrade pip && \
+    pip install --user -r requirements.txt
+
+# Copy only runtime-relevant files
+COPY wsgi.py .
+COPY config.py .
+COPY database_postgres.py .
+COPY templates/ templates/
+COPY static/ static/
+
+# Stage 2: Runtime image
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Copy installed packages and runtime files from builder
+COPY --from=builder /root/.local /root/.local
+COPY --from=builder /build /app
+
+ENV PATH="/root/.local/bin:$PATH"
+
+# Run with gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
+
+EXPOSE 5000
+
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl --fail http://localhost:5000/ || exit 1

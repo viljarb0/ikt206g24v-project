@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Flask App via Module",
+      "type": "python",
+      "request": "launch",
+      "module": "app.main",                  // This runs app/main.py as a module
+      "cwd": "${workspaceFolder}",           // Starts from your root folder
+      "env": {
+        "FLASK_APP": "app.main",
+        "FLASK_ENV": "development"
+      },
+      "console": "integratedTerminal"
+    }
+  ]
+}
